@@ -1,31 +1,51 @@
 package micronaut.openapi.example
 
-import io.micronaut.core.annotation.NonNull
-import io.micronaut.context.ApplicationContextBuilder
-import io.micronaut.context.ApplicationContextConfigurer
-import io.micronaut.context.annotation.ContextConfigurer
-import io.micronaut.runtime.Micronaut
 import groovy.transform.CompileStatic
-import io.swagger.v3.oas.annotations.*
-import io.swagger.v3.oas.annotations.info.*
+import io.micronaut.runtime.Micronaut
+import io.swagger.v3.oas.annotations.OpenAPIDefinition
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType
+import io.swagger.v3.oas.annotations.extensions.Extension
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty
+import io.swagger.v3.oas.annotations.info.Info
+import io.swagger.v3.oas.annotations.security.OAuthFlow
+import io.swagger.v3.oas.annotations.security.OAuthFlows
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import io.swagger.v3.oas.annotations.security.SecurityScheme
+import io.swagger.v3.oas.annotations.security.SecuritySchemes
 
 @OpenAPIDefinition(
-    info = @Info(
-            title = "micronaut-openapi-example",
-            version = "0.0"
+  info = @Info(title = '${info.title}'),
+  security = @SecurityRequirement(name = 'OAuth')
+)
+@SecuritySchemes(
+  @SecurityScheme(
+    name = 'OAuth',
+    type = SecuritySchemeType.OAUTH2,
+    extensions = @Extension(
+      properties = [
+        @ExtensionProperty(
+          name = 'client-id',
+          value = '${security.oauth.client-id}'
+        ),
+        @ExtensionProperty(
+          name = 'client-secret',
+          value = '${security.oauth.client-secret}'
+        )
+      ]
+    ),
+    flows = @OAuthFlows(
+      authorizationCode = @OAuthFlow(
+        authorizationUrl = '${security.oauth.authorization-endpoint}',
+        tokenUrl = '${security.oauth.token-endpoint}'
+      )
     )
+  )
 )
 @CompileStatic
 class Application {
 
-    @ContextConfigurer
-    static class Configurer implements ApplicationContextConfigurer {
-        @Override
-        public void configure(@NonNull ApplicationContextBuilder builder) {
-            builder.defaultEnvironments("dev")
-        }
-    }
     static void main(String[] args) {
         Micronaut.run(Application, args)
     }
+
 }

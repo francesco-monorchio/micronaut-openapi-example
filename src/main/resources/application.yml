@@ -1,15 +1,21 @@
 micronaut:
   application:
     name: micronautOpenapiExample
-  security:
-    authentication: cookie
-    token:
-      jwt:
-        signatures:
-          secret:
-            generator:
-              secret: ${JWT_GENERATOR_SIGNATURE_SECRET:pleaseChangeThisSecretForANewOne}
+  router:
+    static-resources:
+      rapidoc:
+        paths: 'classpath:META-INF/swagger/views/rapidoc'
+        mapping: '/**'
 netty:
   default:
     allocator:
       max-order: 3
+
+openapi:
+  spec-file: 'classpath:META-INF/swagger/openapi.json'
+security:
+  oauth:
+    client-id: 'client-id'
+    client-secret: 'client-secret'
+    authorization-endpoint: 'authorization-endpoint'
+    token-endpoint: 'token-endpoint'

@@ -1,9 +1,6 @@
-micronaut:
-  security:
-    oauth2:
-      clients:
-        default:
-          client-id: ${OAUTH_CLIENT_ID:XXX}
-          client-secret: ${OAUTH_CLIENT_SECRET:YYY}
-          openid:
-            issuer: ${OAUTH_ISSUER}
+security:
+  oauth:
+    client-id: 'dev-client-id'
+    client-secret: 'dev-client-secret'
+    authorization-endpoint: 'dev-authorization-endpoint'
+    token-endpoint: 'dev-token-endpoint'

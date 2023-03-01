@@ -1,0 +1,6 @@
+security:
+  oauth:
+    client-id: ${CLIENT_ID}
+    client-secret: ${CLIENT_SECRET}
+    authorization-endpoint: ${AUTH_URL}
+    token-endpoint: ${TOKEN_URL}
